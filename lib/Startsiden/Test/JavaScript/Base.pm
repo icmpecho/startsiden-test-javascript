@@ -64,8 +64,8 @@ sub find_test_lib {
 }
 
 sub _run_os_command {
-    my ($self, @args) = @_;
-    my $cmd = $self->_generate_command(@args);
+    my ($self, $test, @args) = @_;
+    my $cmd = $self->_generate_command($test, "$0.js", @args);
     #warn "CMD: $cmd";
     my $TAP = Capture::Tiny::tee_merged { system($cmd) };
     $TAP ||= '';
