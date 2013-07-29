@@ -63,6 +63,23 @@ sub find_test_lib {
     return $dir->file($f);
 }
 
+sub find_test_scripts {
+    my ($self) = @_;
+    my @test_scripts;
+    my $test_dir = 't/';
+    # search test dir for js test files
+    opendir(DIR, $test_dir) or croak('Could not locate t directory');
+    my $prefix = $0;
+    $prefix =~ s/$test_dir//;
+    while(my $file = readdir(DIR)) {
+        if($file =~ qr/^$prefix\.?\d{0,2}\.js$/) {
+            push( @test_scripts, $test_dir . $file );
+        }
+    }
+    closedir(DIR);
+    return \@test_scripts;
+}
+
 sub _run_os_command {
     my ($self, $test, @args) = @_;
     my $cmd = $self->_generate_command($test, "$0.js", @args);
